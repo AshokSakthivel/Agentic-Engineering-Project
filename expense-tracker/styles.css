@@ -1,0 +1,182 @@
+/* Group Expense Tracker - Custom Styles */
+
+/* ==============================================
+Base Styles
+============================================== */
+body {
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+}
+
+/* ==============================================
+Header Styles
+============================================== */
+header {
+    transition: all 0.3s ease;
+}
+
+header:hover {
+    background-color: #1e40af; /* Darker blue on hover */
+}
+
+/* ==============================================
+Tab Styles
+============================================== */
+.tab-button {
+    transition: all 0.2s ease;
+    padding: 0.75rem 1.5rem;
+}
+
+.tab-button:hover:not(.active) {
+    color: #2563eb; /* Blue hover */
+    border-color: rgba(37, 99, 235, 0.2);
+}
+
+/* ==============================================
+Card Styles
+============================================== */
+.group-card, .expense-item {
+    transition: all 0.3s ease;
+}
+
+.group-card:hover, .expense-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ==============================================
+Button Styles
+============================================== */
+.bg-blue-600, .bg-green-600 {
+    transition: all 0.2s ease;
+}
+
+.bg-blue-600:hover {
+    background-color: #1d4ed8; /* Darker blue */
+}
+
+.bg-green-600:hover {
+    background-color: #166534; /* Darker green */
+}
+
+.member-btn, .split-method-btn, .whatsapp-btn {
+    transition: all 0.2s ease;
+}
+
+.member-btn:hover, .split-method-btn:hover, .whatsapp-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ==============================================
+Modal Styles
+============================================== */
+#create-group-modal, #whatsapp-modal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==============================================
+Form Styles
+============================================== */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* Blue focus ring */
+}
+
+/* ==============================================
+Currency Input Styles
+============================================== */
+.relative .pl-7 {
+    padding-left: 2.5rem;
+}
+
+.absolute.inset-y-0.left-0.pl-3 {
+    font-weight: 500;
+}
+
+/* ==============================================
+Responsive Adjustments
+============================================== */
+@media (max-width: 640px) {
+    .tab-button {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .grid.grid-cols-2.md\\:grid-cols-5 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==============================================
+WhatsApp Share Button
+============================================== */
+#share-whatsapp {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+#share-whatsapp:hover {
+    color: #128c7e; /* WhatsApp green */
+}
+
+/* ==============================================
+Empty States
+============================================== */
+#empty-groups, #empty-history {
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* ==============================================
+Settlement Status Badges
+============================================== */
+.bg-green-100.text-green-800 {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* ==============================================
+Split Method Tabs
+============================================== */
+.split-method-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.split-method-btn.active {
+    background-color: #2563eb;
+    color: white;
+}
+
+/* ==============================================
+Expense Form Animation
+============================================== */
+#expense-form {
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4">
+            <h1 class="text-2xl font-bold flex items-center">
+                <i class="fa fa-money mr-2"></i>Group Expense Tracker
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="flex border-b">
+                <button class="tab-button active px-6 py-3 text-blue-600 border-b-2 border-blue-600 font-medium" data-tab="groups">Groups</button>
+                <button class="tab-button px-6 py-3 text-gray-500 hover:text-blue-600 border-b-2 border-transparent font-medium" data-tab="expenses">Expenses</button>
+                <button class="tab-button px-6 py-3 text-gray-500 hover:text-blue-600 border-b-2 border-transparent font-medium" data-tab="history">History</button>
+                <button class="tab-button px-6 py-3 text-gray-500 hover:text-blue-600 border-b-2 border-transparent font-medium" data-tab="settings">Settings</button>
+            </div>
+        </div>
+
+        <!-- Groups Tab -->
+        <div id="groups-tab" class="tab-content bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Your Groups</h2>
+                <button id="create-group-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition flex items-center">
+                    <i class="fa fa-plus mr-1"></i> New Group
+                </button>
+            </div>
+
+            <!-- Groups List -->
+            <div id="groups-list" class="space-y-4">
+                <!-- Example Group -->
+                <div class="group-card bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Trip to Goa</h3>
+                            <p class="text-sm text-gray-600">5 members | 8 expenses</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Active</span>
+                    </div>
+                    <div class="mt-3 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2">₹1,250</span>
+                            <span class="text-sm text-gray-600">Total Expenses</span>
+                        </div>
+                        <button class="text-blue-600 hover:text-blue-800 text-sm">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-groups" class="text-center py-12 text-gray-500">
+                    <i class="fa fa-users text-4xl mb-4 opacity-30"></i>
+                    <p class="mb-2">No groups created yet</p>
+                    <p class="text-sm">Create a new group to start tracking expenses with your friends</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expenses Tab -->
+        <div id="expenses-tab" class="tab-content hidden bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Add New Expense</h2>
+                <div class="flex space-x-2">
+                    <button id="switch-group-btn" class="bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm font-medium">
+                        <i class="fa fa-exchange mr-1"></i> Switch Group
+                    </button>
+                </div>
+            </div>
+
+            <!-- Current Group Info -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-semibold text-gray-800">Trip to Goa</h3>
+                        <p class="text-sm text-gray-600">Members: Alice, Bob, Charlie, Dave, Eve</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Active</span>
+                </div>
+            </div>
+
+            <!-- Expense Form -->
+            <form id="expense-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="expense-amount" class="block text-sm font-medium text-gray-700">Amount</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500">₹</span>
+                            </div>
+                            <input type="number" id="expense-amount" class="block w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Enter amount" required>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="expense-currency" class="block text-sm font-medium text-gray-700">Currency</label>
+                        <select id="expense-currency" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="INR">Indian Rupee (₹)</option>
+                            <option value="USD">US Dollar ($)</option>
+                            <option value="EUR">Euro (€)</option>
+                            <option value="GBP">British Pound (£)</option>
+                            <option value="JPY">Japanese Yen (¥)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="expense-description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <input type="text" id="expense-description" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Hotel, Dinner, Transportation">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="expense-date" class="block text-sm font-medium text-gray-700">Date</label>
+                    <input type="date" id="expense-date" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" value="<?php echo date('Y-m-d'); ?>">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Paid By</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="member-btn bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">Alice</button>
+                        <button class="member-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium">Bob</button>
+                        <button class="member-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium">Charlie</button>
+                        <button class="member-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium">Dave</button>
+                        <button class="member-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium">Eve</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Split Method</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" class="split-method-btn bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium" data-split="equal">Equal</button>
+                            <button type="button" class="split-method-btn bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm font-medium" data-split="exact">Exact</button>
+                            <button type="button" class="split-method-btn bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm font-medium" data-split="percentage">Percentage</button>
+                        </div>
+                    </div>
+
+                    <!-- Split Details (Equal) -->
+                    <div id="split-equal" class="split-details bg-gray-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600 mb-3">Expense will be split equally among all 5 members</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Each person pays:</span>
+                            <span id="equal-split-amount" class="text-lg font-bold text-blue-600">₹250.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Split Details (Exact) -->
+                    <div id="split-exact" class="split-details hidden bg-gray-50 rounded-lg p-4">
+                        <div class="space-y-3">
+                            <p class="text-sm text-gray-600">Enter exact amount for each member</p>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                <div class="relative">
+                                    <input type="number" class="exact-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0.00" data-member="Alice">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">₹</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="exact-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0.00" data-member="Bob">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">₹</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="exact-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0.00" data-member="Charlie">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">₹</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="exact-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0.00" data-member="Dave">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">₹</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="exact-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0.00" data-member="Eve">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">₹</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-sm font-medium">Total:</span>
+                                <span id="exact-total" class="text-lg font-bold text-blue-600">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Split Details (Percentage) -->
+                    <div id="split-percentage" class="split-details hidden bg-gray-50 rounded-lg p-4">
+                        <div class="space-y-3">
+                            <p class="text-sm text-gray-600">Enter percentage for each member (total must be 100%)</p>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                <div class="relative">
+                                    <input type="number" class="percentage-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0" data-member="Alice" max="100">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">%</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="percentage-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0" data-member="Bob" max="100">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">%</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="percentage-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0" data-member="Charlie" max="100">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">%</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="percentage-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0" data-member="Dave" max="100">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">%</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" class="percentage-amount w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md" placeholder="0" data-member="Eve" max="100">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-sm font-medium">Total Percentage:</span>
+                                <span id="percentage-total" class="text-lg font-bold text-blue-600">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-4 border-t">
+                    <button type="submit" class="bg-green-600 text-white px-6 py-2.5 rounded hover:bg-green-700 transition text-sm font-medium flex items-center">
+                        <i class="fa fa-plus-circle mr-2"></i> Add Expense
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history-tab" class="tab-content hidden bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Expense History</h2>
+                <div class="flex items-center space-x-2">
+                    <select id="history-filter" class="bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium">
+                        <option value="all">All Groups</option>
+                        <option value="goa">Trip to Goa</option>
+                    </select>
+                    <span class="text-gray-500 text-sm">|</span>
+                    <button id="share-whatsapp" class="text-blue-600 hover:text-blue-800 text-sm flex items-center">
+                        <i class="fa fa-whatsapp mr-1"></i> Share via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- Expense History List -->
+            <div class="space-y-4">
+                <!-- Example Expense Item -->
+                <div class="expense-item bg-gray-50 rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Dinner at Beach Resort</h3>
+                            <p class="text-sm text-gray-600">₹1,200 | 2023-05-15 | Trip to Goa</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Settled</span>
+                    </div>
+                    <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700">Paid By</h4>
+                            <p class="text-sm">Alice</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700">Split Method</h4>
+                            <p class="text-sm">Equal (₹240 each)</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700">Settled By</h4>
+                            <p class="text-sm">All members</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-history" class="text-center py-12 text-gray-500 hidden">
+                    <i class="fa fa-history text-4xl mb-4 opacity-30"></i>
+                    <p class="mb-2">No expenses yet</p>
+                    <p class="text-sm">Add expenses to see them here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="tab-content hidden bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Settings</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-medium text-gray-800 mb-2">Currency Settings</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600 mb-3">Exchange rates are updated daily</p>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <div class="font-semibold">₹ 1.00</div>
+                                <div class="text-sm text-gray-500">= $ 0.012</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="font-semibold">₹ 1.00</div>
+                                <div class="text-sm text-gray-500">= € 0.011</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="font-semibold">₹ 1.00</div>
+                                <div class="text-sm text-gray-500">= £ 0.009</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-medium text-gray-800 mb-2">Notification Preferences</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Email notifications for new expenses</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">WhatsApp notifications for expense splits</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-medium text-gray-800 mb-2">Help & Support</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fa fa-question-circle mt-1 mr-2 text-blue-600"></i>
+                                <span>How to split expenses? <a href="#" class="text-blue-600 hover:underline">Learn more</a></span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-question-circle mt-1 mr-2 text-blue-600"></i>
+                                <span>How to settle payments? <a href="#" class="text-blue-600 hover:underline">Learn more</a></span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-envelope mt-1 mr-2 text-blue-600"></i>
+<span>Contact support: <a href="mailto:ashoksakthi@gmail.com" class="text-blue-600 hover:underline">ashoksakthi@gmail.com</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Group Modal -->
+    <div id="create-group-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 transform transition-all">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Create New Group</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <form id="group-form" class="space-y-4">
+                    <div class="space-y-2">
+                        <label for="group-name" class="block text-sm font-medium text-gray-700">Group Name</label>
+                        <input type="text" id="group-name" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Trip to Goa, Birthday Party" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label for="group-description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="group-description" rows="2" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Optional: Add details about the group"></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label for="group-members" class="block text-sm font-medium text-gray-700">Members</label>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="member-btn bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">You</button>
+                            <input type="text" id="new-member" class="flex-grow min-w-[100px] pl-3 pr-3 py-2 border border-gray-300 rounded-md" placeholder="Add member name">
+                            <button type="button" id="add-member" class="bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-4 border-t">
+                        <button type="button" id="cancel-group" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition text-sm font-medium mr-2">Cancel</button>
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm font-medium">Create Group</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Share Modal -->
+    <div id="whatsapp-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 transform transition-all">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Share Expense Split</h3>
+                    <button id="close-whatsapp-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Expense Details</h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">Dinner at Beach Resort</span>
+                                <span class="text-sm font-bold text-blue-600">₹1,200</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-600">Split Method:</span>
+                                <span class="text-sm">Equal (₹240 each)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Paid By:</span>
+                                <span class="text-sm">Alice</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Share with Members</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="whatsapp-btn bg-green-100 text-green-800 px-3 py-1 rounded text-sm font-medium">
+                                <i class="fa fa-whatsapp mr-1"></i> Alice
+                            </button>
+                            <button class="whatsapp-btn bg-green-100 text-green-800 px-3 py-1 rounded text-sm font-medium">
+                                <i class="fa fa-whatsapp mr-1"></i> Bob
+                            </button>
+                            <button class="whatsapp-btn bg-green-100 text-green-800 px-3 py-1 rounded text-sm font-medium">
+                                <i class="fa fa-whatsapp mr-1"></i> Charlie
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-4 border-t">
+                        <button type="button" id="close-whatsapp" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition text-sm font-medium mr-2">Cancel</button>
+                        <button type="button" id="share-all-whatsapp" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm font-medium flex items-center">
+                            <i class="fa fa-whatsapp mr-1"></i> Share with All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 text-center py-4 mt-8">
+        <p class="text-sm text-gray-600">© 2026 Group Expense Tracker | Made with <i class="fa fa-heart text-red-500"></i> for friends</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
